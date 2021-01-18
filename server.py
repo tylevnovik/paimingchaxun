@@ -514,20 +514,24 @@ def do_query():
     item = request.forms.get('item')
     filepath = item + ".csv"
     # 读取csv至字典
-    csvFile = open(filepath, "r")
+    if os.path.exists(filepath):
+        csvFile = open(filepath, "r")
+    else:
+        return '<h1><p style="color:#FF0000">您选择的项目暂未开放查询，请返回重新选择</p></h1>'
+
     dict_reader = csv.DictReader(csvFile)
 
     for row in dict_reader:
         if row['name'] == name and row['xduid'] == xduid and row['id'] == id:
             rank = int(row['rank'])
             average = float(row['average'])
-            returnString = f'<h1>{name}同学</h1><h1>你的平均成绩为{average}</h1><h1>你的年级排名为{rank}</h1><h1>位于年级的前{rank / 245 * 100:.2f}%</h1>'
+            returnstring = f'<h1>{name}同学</h1><h1>你的平均成绩为{average}</h1><h1>你的年级排名为{rank}</h1><h1>位于年级的前{rank / 245 * 100:.2f}%</h1>'
             break
         else:
-            returnString = '<h1><p style="color:#FF0000">输入有误，请返回重新输入</p></h1>'
+            returnstring = '<h1><p style="color:#FF0000">输入有误，请返回重新输入</p></h1>'
 
     csvFile.close()
-    return returnString
+    return returnstring
 
 
-run(host='0.0.0.0', port=12345, debug=True)
+run(host='0.0.0.0', port=12345, debug=False)
