@@ -3,6 +3,16 @@ from bottle import route, run, request, get, static_file, error, template
 import csv
 import os
 
+@get('/<shit>')
+@error(404)
+def error404(shit):
+    return template('erroralertpage', content='啥都没有')
+
+
+@error(500)
+def error500():
+    return template('erroralertpage', content='服务器出错了')
+
 
 @get('/')
 def showPage():
@@ -15,17 +25,19 @@ def pushIcon():
 
 
 @get('/guanji')
+def guanji():
+    if request.query.pwd == "123456":
+        os.system('shutdown -s -t 10')
+    else:
+        return template('erroralertpage', content='密码错误，访问已记录')
+
+
 @get('/shutdown')
 def shutdown():
     if request.query.pwd == "123456":
         os._exit(10086)
     else:
         return template('erroralertpage', content='密码错误，访问已记录')
-
-
-@error(404)
-def error404():
-    return template('erroralertpage', content='啥都没有')
 
 
 @route('/', method='POST')
