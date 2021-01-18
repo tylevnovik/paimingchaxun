@@ -20,12 +20,12 @@ def shutdown():
     if request.query.pwd == "123456":
         os._exit(10086)
     else:
-        return template('erroralertpage',content='密码错误，访问已记录')
+        return template('erroralertpage', content='密码错误，访问已记录')
 
 
 @error(404)
-def error404(error):
-    return template('erroralertpage',content='啥都没有')
+def error404():
+    return template('erroralertpage', content='啥都没有')
 
 
 @route('/', method='POST')
@@ -37,22 +37,23 @@ def do_query():
     filepath = item + ".csv"
     # 读取csv至字典
     if os.path.exists(filepath):
-        csvFile = open(filepath, "r")
+        itemcsv = open(filepath, "r")
     else:
-        return template('erroralertpage',content='您选择的项目暂未开放查询，请返回重新选择')
+        return template('erroralertpage', content='您选择的项目暂未开放查询，请返回重新选择')
 
-    dict_reader = csv.DictReader(csvFile)
+    data = csv.DictReader(itemcsv)
 
-    for row in dict_reader:
+    for row in data:
         if row['name'] == name and row['xduid'] == xduid and row['id'] == id:
             rank = int(row['rank'])
             average = float(row['average'])
-            returnstring = f'<title>查询成功</title><h1>{name}同学</h1><h1>你的平均成绩为{average}</h1><h1>你的年级排名为{rank}</h1><h1>位于年级的前{rank / 245 * 100:.2f}%</h1>'
+            returnstring = template('result', name=name, average=average, rank=rank, percent=f'{rank / 245 * 100:.2f}',
+                                    ratings=f'{10 - (rank / 245 * 10):.2f}')
             break
         else:
-            returnstring = template('erroralertpage',content='输入有误，请返回重新查询')
+            returnstring = template('erroralertpage', content='输入有误，请返回重新查询')
 
-    csvFile.close()
+    itemcsv.close()
     return returnstring
 
 
