@@ -498,7 +498,7 @@ def pushIcon():
 
 @get('/shutdown')
 def shutdown():
-    os._exit(0)
+    os._exit(10086)
 
 
 @error(404)
@@ -511,8 +511,10 @@ def do_query():
     name = request.forms.get('name')
     xduid = request.forms.get('xduid')
     id = request.forms.get('id')
+    item = request.forms.get('item')
+    filepath = item + ".csv"
     # 读取csv至字典
-    csvFile = open("instance.csv", "r")
+    csvFile = open(filepath, "r")
     dict_reader = csv.DictReader(csvFile)
 
     for row in dict_reader:
