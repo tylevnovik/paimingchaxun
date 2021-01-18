@@ -3,7 +3,7 @@ from bottle import route, run, request, get, static_file, error, template
 import csv
 import os
 
-@get('/<shit>')
+
 @error(404)
 def error404(shit):
     return template('erroralertpage', content='啥都没有')
