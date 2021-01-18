@@ -498,12 +498,15 @@ def pushIcon():
 
 @get('/shutdown')
 def shutdown():
-    os._exit(10086)
+    if request.query.pwd == "123456":
+        os._exit(10086)
+    else:
+        return '<title>错误！</title><h1><p style="color:#FF0000">密码错误，访问已记录</p></h1>'
 
 
 @error(404)
 def error404(error):
-    return '啥都没有'
+    return '<title>错误！</title><h1><p style="color:#FF0000">啥都没有</p></h1>'
 
 
 @route('/', method='POST')
@@ -517,7 +520,7 @@ def do_query():
     if os.path.exists(filepath):
         csvFile = open(filepath, "r")
     else:
-        return '<h1><p style="color:#FF0000">您选择的项目暂未开放查询，请返回重新选择</p></h1>'
+        return '<title>错误！</title><h1><p style="color:#FF0000">您选择的项目暂未开放查询，请返回重新选择</p></h1>'
 
     dict_reader = csv.DictReader(csvFile)
 
@@ -525,10 +528,10 @@ def do_query():
         if row['name'] == name and row['xduid'] == xduid and row['id'] == id:
             rank = int(row['rank'])
             average = float(row['average'])
-            returnstring = f'<h1>{name}同学</h1><h1>你的平均成绩为{average}</h1><h1>你的年级排名为{rank}</h1><h1>位于年级的前{rank / 245 * 100:.2f}%</h1>'
+            returnstring = f'<title>查询成功</title><h1>{name}同学</h1><h1>你的平均成绩为{average}</h1><h1>你的年级排名为{rank}</h1><h1>位于年级的前{rank / 245 * 100:.2f}%</h1>'
             break
         else:
-            returnstring = '<h1><p style="color:#FF0000">输入有误，请返回重新输入</p></h1>'
+            returnstring = '<title>错误！</title><h1><p style="color:#FF0000">输入有误，请返回重新输入</p></h1>'
 
     csvFile.close()
     return returnstring
