@@ -5,12 +5,12 @@ import os
 
 
 @error(404)
-def error404():
+def error404(error):
     return template('erroralertpage', content='啥都没有')
 
 
 @error(500)
-def error500():
+def error500(error):
     return template('erroralertpage', content='服务器出错了')
 
 
