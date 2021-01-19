@@ -5,7 +5,7 @@ import os
 
 
 @error(404)
-def error404(shit):
+def error404():
     return template('erroralertpage', content='啥都没有')
 
 
@@ -69,4 +69,4 @@ def do_query():
     return returnstring
 
 
-run(host='0.0.0.0', port=12345, debug=False)
+run(host='0.0.0.0', port=12345, debug=False, server='paste')
