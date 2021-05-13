@@ -74,7 +74,7 @@ if __name__ == '__main__':
     csvfilepath = os.listdir('.\\')
     csvfilepath = [x.replace('.csv', '') for x in csvfilepath if not x.find('.csv') == -1]
     print('载入的csv文件列表：', csvfilepath)
-    datadict = {'date': datetime.datetime, 'data': {}}
+    datadict = {'date': datetime.datetime.today(), 'data': {}}
     csvdictlist = []
     for filename in csvfilepath:
         path = filename + '.csv'
