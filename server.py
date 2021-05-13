@@ -52,10 +52,10 @@ def do_query():
     xduid = request.forms.get('xduid')
     id = request.forms.get('id')
     item = request.forms.get('item')
-
-    data = datadict['data'][item]
-    if data == None:
-        returnstring = template('erroralertpage', content='您选择的项目暂未开放查询，请返回重新选择')
+    try:
+        data = datadict['data'][item]
+    except KeyError:
+        return template('erroralertpage', content='您选择的项目暂未开放查询，请返回重新选择')
     for row in data:
         if row['name'] == name and row['xduid'] == xduid and row['id'] == id:
             rank = int(row['rank'])
