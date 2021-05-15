@@ -219,7 +219,7 @@ g.getElementById=function(a){for(var b=this.a.length,c=0;c<b;c++){var d=this.a[c
     <gwd-page id="page1" class="gwd-page-wrapper page1-content gwd-lightbox" data-gwd-width="550px" data-gwd-height="400px">
       <div class="gwd-page-content page1-content">
         <h1 class="gwd-p-ibed">出错了！😅</h1>
-        <svg data-gwd-shape="rectangle" class="gwd-rect-1b30"></svg><span class="gwd-span-bewo">{{content}}</span></div>
+        <svg data-gwd-shape="rectangle" class="gwd-rect-1b30"></svg><span class="gwd-span-bewo">{{!content}}</span></div>
     <div style="position: absolute; left: 0px; top: 0px; width: 100%; height: 1px; z-index: 9000; background-color: rgb(0, 0, 0);"></div><div style="position: absolute; right: 0px; top: 0px; width: 1px; height: 100%; z-index: 9000; background-color: rgb(0, 0, 0);"></div><div style="position: absolute; left: 0px; bottom: 0px; width: 100%; height: 1px; z-index: 9000; background-color: rgb(0, 0, 0);"></div><div style="position: absolute; left: 0px; top: 0px; width: 1px; height: 100%; z-index: 9000; background-color: rgb(0, 0, 0);"></div></gwd-page>
   </gwd-pagedeck>
   <script type="text/javascript" id="gwd-init-code">

@@ -8,12 +8,12 @@ from bottle import route, run, request, get, static_file, error, template
 
 @error(404)
 def error404(error):
-    return template('erroralertpage', content='啥都没有')
+    return template('erroralertpage', content='别试了，啥都没有。')
 
 
 @error(500)
 def error500(error):
-    return template('erroralertpage', content='服务器出错了')
+    return template('erroralertpage', content='服务器出错了，请联系系统管理员。</ br>QQ:1226159010')
 
 
 @get('/')
