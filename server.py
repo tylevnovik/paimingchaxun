@@ -78,7 +78,7 @@ if __name__ == '__main__':
     for filename in csvfilepath:
         path = filename + '.csv'
         if os.path.exists(path):
-            with open(path) as csvfile:
+            with open(path, 'r', encoding='UTF-8') as csvfile:
                 data = csv.DictReader(csvfile)
                 for row in data:
                     csvdictlist.append(row)
