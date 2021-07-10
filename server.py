@@ -1,9 +1,37 @@
 # -*- coding: utf-8 -*-
-import csv
+import argparse
 import datetime
 import os
+import socket
 
 from bottle import route, run, request, get, static_file, error, template
+
+import csv
+
+
+@get('/dump')
+def dumpfunc():
+    try:
+        predownloaddumpfiles = [x for x in os.listdir('./dump') if not x.find('.dat') == -1]
+    except FileNotFoundError:
+        return 'No dump files found.'
+    if predownloaddumpfiles == []:
+        return 'No dump files found.'
+    files = ''
+    for asinglefile in predownloaddumpfiles:
+        file = f'<a href="./dump/{asinglefile}">{asinglefile}</a>'
+        files += file
+    return files
+
+
+@get('/dump/<filename>')
+def getdumpfile(filename=None):
+    if filename == '':
+        return template('erroralertpage', content='别试了，啥都没有。')
+    elif not filename.find('.dat') == -1:
+        return static_file(filename, root='./dump', download=True)
+    else:
+        return template('erroralertpage', content='别试了，啥都没有。')
 
 
 @error(404)
@@ -13,6 +41,10 @@ def error404(error):
 
 @error(500)
 def error500(error):
+    import pickle
+    dumpfilename = './dump/dump' + datetime.datetime.today().strftime('%y%m%d') + '.dat'
+    with open(dumpfilename, 'wb') as dumpfile:
+        pickle.dump(datadict, dumpfile)
     return template('erroralertpage', content='服务器出错了，请联系系统管理员。</ br>QQ:1226159010')
 
 
@@ -70,13 +102,28 @@ def do_query():
     return returnstring
 
 
+def IsOpen(port, ip='127.0.0.1'):
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    try:
+        s.connect((ip, int(port)))
+        s.shutdown(2)
+        return True
+    except:
+        return False
+
+
 if __name__ == '__main__':
-    csvfilepath = [x.replace('.csv', '') for x in os.listdir('.\\') if not x.find('.csv') == -1]
+    parse = argparse.ArgumentParser()
+    parse.add_argument("-c", "--csvpath", type=str, default="./csv", help="the path of csv files")
+    parse.add_argument("-p", "--port", type=int, default=80, help="the port number the service serving at")
+    parse.add_argument("-d", "--debug", type=bool, default=False, help="whether to enable debug mode")
+    args = parse.parse_args()
+    csvfilepath = [x.replace('.csv', '') for x in os.listdir(args.csvpath) if not x.find('.csv') == -1]
     print('载入的csv文件列表：', csvfilepath)
     datadict = {'date': datetime.datetime.today(), 'data': {}}
     csvdictlist = []
     for filename in csvfilepath:
-        path = filename + '.csv'
+        path = args.csvpath + '/' + filename + '.csv'
         if os.path.exists(path):
             with open(path, 'r', encoding='UTF-8') as csvfile:
                 data = csv.DictReader(csvfile)
@@ -84,5 +131,11 @@ if __name__ == '__main__':
                     csvdictlist.append(row)
             datadict['data'][filename] = csvdictlist
             csvdictlist = []
-    print(datadict)
-    run(host='0.0.0.0', port=12345, debug=False, server='paste')
+    if args.debug:
+        print(datadict)
+    print('开始检查端口是否被占用')
+    if not IsOpen(args.port):
+        print(f'{args.port}端口未被占用，启动服务器')
+        run(host='0.0.0.0', port=args.port, debug=False, server='paste')
+    else:
+        print(f'{args.port}端口已被占用，请更换端口')
