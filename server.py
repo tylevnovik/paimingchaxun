@@ -114,7 +114,7 @@ def IsOpen(port, ip='127.0.0.1'):
 
 if __name__ == '__main__':
     parse = argparse.ArgumentParser()
-    parse.add_argument("-c", "--csvpath", type=str, default="./csv", help="the path of csv files")
+    parse.add_argument("-f", "--csvpath", type=str, default="./csv", help="the path of csv files")
     parse.add_argument("-p", "--port", type=int, default=80, help="the port number the service serving at")
     parse.add_argument("-d", "--debug", type=bool, default=False, help="whether to enable debug mode")
     args = parse.parse_args()
