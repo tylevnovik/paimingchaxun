@@ -45,7 +45,7 @@ def error500(error):
     dumpfilename = './dump/dump' + datetime.datetime.today().strftime('%y%m%d') + '.dat'
     with open(dumpfilename, 'wb') as dumpfile:
         pickle.dump(datadict, dumpfile)
-    return template('erroralertpage', content='服务器出错了，请联系系统管理员。</ br>QQ:1226159010')
+    return template('erroralertpage', content='服务器出错了，请联系系统管理员。')
 
 
 @get('/')
